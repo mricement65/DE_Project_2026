@@ -1,0 +1,13 @@
+{
+  "team_number": "T0108",
+  "group_lead": { "name": "Priyadarshi Sidhartha", "enrollment_no": "2501010354", "github": "https://github.com/PriyadarshiSidhartha" },
+  "members": [
+    { "name": "Mridul Gupta", "enrollment_no": "2501010668", "github": "https://github.com/mricement65" },
+    { "name": "Devansh", "enrollment_no": "2501010138", "github": "https://github.com/devansha25138-creator" },
+    { "name": "Atharwa Sahu", "enrollment_no": "2501010104", "github": "https://github.com/atharwa1" }
+  ],
+  "de_repo": "https://github.com/mricement65/DE_Project_2026",
+  "ap_repo": "https://github.com/PriyadarshiSidhartha/Somewhere.git",
+  "postgres_version": "18.6",
+  "laptop_used_for_benchmarks": "MacBook Pro (Apple M4)"
+}
