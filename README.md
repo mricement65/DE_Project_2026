@@ -18,16 +18,16 @@
 
 ---
 
-## Team details (fill in before you start)
+## Team details
 
 | Role | Name | Enrollment No. | GitHub Username |
 |------|------|----------------|-----------------|
-| Group Lead | | | |
-| Member 2 | | | |
-| Member 3 | | | |
-| Member 4 | | | |
+| Group Lead | Priyadarshi Sidhartha | 2501010354 | [PriyadarshiSidhartha](https://github.com/PriyadarshiSidhartha) |
+| Member 2 | Mridul Gupta | 2501010668 | [mricement65](https://github.com/mricement65) |
+| Member 3 | Devansh | 2501010138 | [devansha25138-creator](https://github.com/devansha25138-creator) |
+| Member 4 | Atharwa Sahu | 2501010104 | [atharwa1](https://github.com/atharwa1) |
 
-**Team No.:** ____ · **Section:** ____ · **Repository URL:** ____
+**Team No.:** T0108 · **Section:** A,B and E · **Repository URL:** https://github.com/mricement65/DE_Project_2026
 
 ---
 
