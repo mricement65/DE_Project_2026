@@ -222,39 +222,39 @@ The helper script does all of this for you:
 ### 3.2 Deliverable: the timing table
 In `docs/03_baseline_timings.md`, fill this table for **all 30** queries:
 
-| SQL Query | Type | Run 1 (ms) | Run 2 (ms) | Run 3 (ms) | Average (ms) |
+| SQL query | Type | Run 1 (ms) | Run 2 (ms) | Run 3 (ms) | Average (ms) |
 |---|---|---:|---:|---:|---:|
-| R01: Artist page: artist 33's 10 most-streamed tracks in the last 28 days | READ | | | | |
-| R02: Album page: tracklist of album 1469 | READ | | | | |
-| R03: Search: tracks whose title contains "love", most popular first | READ | | | | |
-| R04: "Recently played": user 1038's last 50 streams | READ | | | | |
-| R05: Playlist page: playlist 501 in order, with every artist on each track | READ | | | | |
-| R06: "Liked Songs": user 1038's liked tracks, newest first | READ | | | | |
-| R07: Royalties: streams of 30 seconds or more ("royalty-eligible") per artist in June 2026, top 20 | READ | | | | |
-| R08: Spotify for Artists: skip rate of each of artist 33's tracks | READ | | | | |
-| R09: Wrapped 2025: user 1038's top 5 artists by minutes listened | READ | | | | |
-| R10: Platform analytics: daily streams per platform in June 2026 | READ | | | | |
-| R11: "Release Radar": 2026 releases by artists user 1038 follows | READ | | | | |
-| R12: Compliance: explicit tracks streamed by users who were under 18 at the time | READ | | | | |
-| R13: Curation team: public playlists that have never been played | READ | | | | |
-| R14: Collaborative playlists: number of different people who added tracks | READ | | | | |
-| R15: "Fans also like": artists most followed by the followers of artist 33 | READ | | | | |
-| R16: Artist profiles: distinct listeners of every artist in the last 28 days ("monthly listeners") | READ | | | | |
-| R17: Growth: free users with 4+ streams in June 2026 (Premium upsell list) | READ | | | | |
-| R18: Platform analytics: share of offline listening per platform | READ | | | | |
-| R19: Verified artists report: total streams and the latest stream of every verified artist | READ | | | | |
-| R20: Listening patterns: streams per hour of the day per country | READ | | | | |
-| R21: Rights management: look up a recording by its ISRC code | READ | | | | |
-| R22: Playlist hygiene: playlists that contain the same track more than once | READ | | | | |
-| R23: Support console: all streams, newest first, page 8,001 (25 per page) | READ | | | | |
-| R24: Label report: average track length and explicit share per album type | READ | | | | |
-| R25: Discovery: tracks released in the last 30 days, ranked by streams | READ | | | | |
-| W01: Player: log a stream of track 1389 by user 1038 | WRITE | | | | |
-| W02: Heart button: user 1038 likes track 1389 | WRITE | | | | |
-| W03: "Add to playlist": append track 1389 to the end of playlist 501 | WRITE | | | | |
-| W04: Nightly job: recompute every artist's monthly listeners (last 28 days) | WRITE | | | | |
-| W05: Takedown: the label withdrew the whole album of track 1389, so remove its tracks from every playlist | WRITE | | | | |
-| **Total (sum of all 30)** | | | | | |
+| R01: Artist page: artist 33's 10 most-streamed tracks in the last 28 days | READ | 206.909 | 22.175 | 21.219 | 83.434 |
+| R02: Album page: tracklist of album 1469 | READ | 0.452 | 0.035 | 0.008 | 0.165 |
+| R03: Search: tracks whose title contains "love", most popular first | READ | 50.554 | 15.720 | 16.238 | 27.504 |
+| R04: "Recently played": user 1038's last 50 streams | READ | 83.907 | 14.253 | 14.067 | 37.409 |
+| R05: Playlist page: playlist 501 in order, with every artist on each track | READ | 3.655 | 0.114 | 0.080 | 1.283 |
+| R06: "Liked Songs": user 1038's liked tracks, newest first | READ | 1.854 | 0.177 | 0.018 | 0.683 |
+| R07: Royalties: streams of 30 seconds or more ("royalty-eligible") per artist in June 2026, top 20 | READ | 81.411 | 37.659 | 34.198 | 51.089 |
+| R08: Spotify for Artists: skip rate of each of artist 33's tracks | READ | 57.298 | 38.240 | 36.569 | 44.036 |
+| R09: Wrapped 2025: user 1038's top 5 artists by minutes listened | READ | 58.359 | 15.321 | 15.623 | 29.768 |
+| R10: Platform analytics: daily streams per platform in June 2026 | READ | 48.110 | 39.669 | 38.407 | 42.062 |
+| R11: "Release Radar": 2026 releases by artists user 1038 follows | READ | 2.514 | 0.771 | 0.689 | 1.325 |
+| R12: Compliance: explicit tracks streamed by users who were under 18 at the time | READ | 190.771 | 70.990 | 70.119 | 110.627 |
+| R13: Curation team: public playlists that have never been played | READ | 141.079 | 61.046 | 56.671 | 86.265 |
+| R14: Collaborative playlists: number of different people who added tracks | READ | 34.763 | 19.944 | 19.797 | 24.835 |
+| R15: "Fans also like": artists most followed by the followers of artist 33 | READ | 14.058 | 3.698 | 3.608 | 7.121 |
+| R16: Artist profiles: distinct listeners of every artist in the last 28 days ("monthly listeners") | READ | 56.223 | 44.583 | 44.651 | 48.486 |
+| R17: Growth: free users with 4+ streams in June 2026 (Premium upsell list) | READ | 68.880 | 22.754 | 22.176 | 37.937 |
+| R18: Platform analytics: share of offline listening per platform | READ | 66.738 | 59.336 | 62.756 | 62.943 |
+| R19: Verified artists report: total streams and the latest stream of every verified artist | READ | 25334.066 | 25115.388 | 24596.035 | 25015.163 |
+| R20: Listening patterns: streams per hour of the day per country | READ | 366.833 | 282.438 | 265.273 | 304.848 |
+| R21: Rights management: look up a recording by its ISRC code | READ | 0.405 | 0.206 | 0.013 | 0.208 |
+| R22: Playlist hygiene: playlists that contain the same track more than once | READ | 57.612 | 50.769 | 59.371 | 55.917 |
+| R23: Support console: all streams, newest first, page 8,001 (25 per page) | READ | 131.387 | 96.450 | 91.667 | 106.501 |
+| R24: Label report: average track length and explicit share per album type | READ | 32.363 | 29.745 | 29.133 | 30.414 |
+| R25: Discovery: tracks released in the last 30 days, ranked by streams | READ | 59.897 | 51.060 | 36.528 | 49.162 |
+| W01: Player: log a stream of track 1389 by user 1038 | WRITE | 3.856 | 0.387 | 0.334 | 1.526 |
+| W02: Heart button: user 1038 likes track 1389 | WRITE | 2.106 | 0.074 | 0.046 | 0.742 |
+| W03: "Add to playlist": append track 1389 to the end of playlist 501 | WRITE | 2.871 | 0.222 | 0.078 | 1.057 |
+| W04: Nightly job: recompute every artist's monthly listeners (last 28 days) | WRITE | 209.798 | 105.887 | 93.654 | 136.446 |
+| W05: Takedown: the label withdrew the whole album of track 1389, so remove its tracks from every playlist | WRITE | 22.523 | 14.782 | 14.963 | 17.423 |
+| **Total (sum of all 30)** | | 27391.252 | 26213.893 | 25643.989 | 26416.378 |
 
 Below the table, add for each query the **scan type** from the plan (Seq Scan, Index Scan, …) and one line on **why** it is slow or fast.
 
