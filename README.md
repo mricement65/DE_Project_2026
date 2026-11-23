@@ -222,39 +222,39 @@ The helper script does all of this for you:
 ### 3.2 Deliverable: the timing table
 In `docs/03_baseline_timings.md`, fill this table for **all 30** queries:
 
-| SQL Query | Type | Run 1 (ms) | Run 2 (ms) | Run 3 (ms) | Average (ms) |
+| SQL query | Type | Run 1 (ms) | Run 2 (ms) | Run 3 (ms) | Average (ms) |
 |---|---|---:|---:|---:|---:|
-| R01: Artist page: artist 33's 10 most-streamed tracks in the last 28 days | READ | | | | |
-| R02: Album page: tracklist of album 1469 | READ | | | | |
-| R03: Search: tracks whose title contains "love", most popular first | READ | | | | |
-| R04: "Recently played": user 1038's last 50 streams | READ | | | | |
-| R05: Playlist page: playlist 501 in order, with every artist on each track | READ | | | | |
-| R06: "Liked Songs": user 1038's liked tracks, newest first | READ | | | | |
-| R07: Royalties: streams of 30 seconds or more ("royalty-eligible") per artist in June 2026, top 20 | READ | | | | |
-| R08: Spotify for Artists: skip rate of each of artist 33's tracks | READ | | | | |
-| R09: Wrapped 2025: user 1038's top 5 artists by minutes listened | READ | | | | |
-| R10: Platform analytics: daily streams per platform in June 2026 | READ | | | | |
-| R11: "Release Radar": 2026 releases by artists user 1038 follows | READ | | | | |
-| R12: Compliance: explicit tracks streamed by users who were under 18 at the time | READ | | | | |
-| R13: Curation team: public playlists that have never been played | READ | | | | |
-| R14: Collaborative playlists: number of different people who added tracks | READ | | | | |
-| R15: "Fans also like": artists most followed by the followers of artist 33 | READ | | | | |
-| R16: Artist profiles: distinct listeners of every artist in the last 28 days ("monthly listeners") | READ | | | | |
-| R17: Growth: free users with 4+ streams in June 2026 (Premium upsell list) | READ | | | | |
-| R18: Platform analytics: share of offline listening per platform | READ | | | | |
-| R19: Verified artists report: total streams and the latest stream of every verified artist | READ | | | | |
-| R20: Listening patterns: streams per hour of the day per country | READ | | | | |
-| R21: Rights management: look up a recording by its ISRC code | READ | | | | |
-| R22: Playlist hygiene: playlists that contain the same track more than once | READ | | | | |
-| R23: Support console: all streams, newest first, page 8,001 (25 per page) | READ | | | | |
-| R24: Label report: average track length and explicit share per album type | READ | | | | |
-| R25: Discovery: tracks released in the last 30 days, ranked by streams | READ | | | | |
-| W01: Player: log a stream of track 1389 by user 1038 | WRITE | | | | |
-| W02: Heart button: user 1038 likes track 1389 | WRITE | | | | |
-| W03: "Add to playlist": append track 1389 to the end of playlist 501 | WRITE | | | | |
-| W04: Nightly job: recompute every artist's monthly listeners (last 28 days) | WRITE | | | | |
-| W05: Takedown: the label withdrew the whole album of track 1389, so remove its tracks from every playlist | WRITE | | | | |
-| **Total (sum of all 30)** | | | | | |
+| R01: Artist page: artist 33's 10 most-streamed tracks in the last 28 days | READ | 206.909 | 22.175 | 21.219 | 83.434 |
+| R02: Album page: tracklist of album 1469 | READ | 0.452 | 0.035 | 0.008 | 0.165 |
+| R03: Search: tracks whose title contains "love", most popular first | READ | 50.554 | 15.720 | 16.238 | 27.504 |
+| R04: "Recently played": user 1038's last 50 streams | READ | 83.907 | 14.253 | 14.067 | 37.409 |
+| R05: Playlist page: playlist 501 in order, with every artist on each track | READ | 3.655 | 0.114 | 0.080 | 1.283 |
+| R06: "Liked Songs": user 1038's liked tracks, newest first | READ | 1.854 | 0.177 | 0.018 | 0.683 |
+| R07: Royalties: streams of 30 seconds or more ("royalty-eligible") per artist in June 2026, top 20 | READ | 81.411 | 37.659 | 34.198 | 51.089 |
+| R08: Spotify for Artists: skip rate of each of artist 33's tracks | READ | 57.298 | 38.240 | 36.569 | 44.036 |
+| R09: Wrapped 2025: user 1038's top 5 artists by minutes listened | READ | 58.359 | 15.321 | 15.623 | 29.768 |
+| R10: Platform analytics: daily streams per platform in June 2026 | READ | 48.110 | 39.669 | 38.407 | 42.062 |
+| R11: "Release Radar": 2026 releases by artists user 1038 follows | READ | 2.514 | 0.771 | 0.689 | 1.325 |
+| R12: Compliance: explicit tracks streamed by users who were under 18 at the time | READ | 190.771 | 70.990 | 70.119 | 110.627 |
+| R13: Curation team: public playlists that have never been played | READ | 141.079 | 61.046 | 56.671 | 86.265 |
+| R14: Collaborative playlists: number of different people who added tracks | READ | 34.763 | 19.944 | 19.797 | 24.835 |
+| R15: "Fans also like": artists most followed by the followers of artist 33 | READ | 14.058 | 3.698 | 3.608 | 7.121 |
+| R16: Artist profiles: distinct listeners of every artist in the last 28 days ("monthly listeners") | READ | 56.223 | 44.583 | 44.651 | 48.486 |
+| R17: Growth: free users with 4+ streams in June 2026 (Premium upsell list) | READ | 68.880 | 22.754 | 22.176 | 37.937 |
+| R18: Platform analytics: share of offline listening per platform | READ | 66.738 | 59.336 | 62.756 | 62.943 |
+| R19: Verified artists report: total streams and the latest stream of every verified artist | READ | 25334.066 | 25115.388 | 24596.035 | 25015.163 |
+| R20: Listening patterns: streams per hour of the day per country | READ | 366.833 | 282.438 | 265.273 | 304.848 |
+| R21: Rights management: look up a recording by its ISRC code | READ | 0.405 | 0.206 | 0.013 | 0.208 |
+| R22: Playlist hygiene: playlists that contain the same track more than once | READ | 57.612 | 50.769 | 59.371 | 55.917 |
+| R23: Support console: all streams, newest first, page 8,001 (25 per page) | READ | 131.387 | 96.450 | 91.667 | 106.501 |
+| R24: Label report: average track length and explicit share per album type | READ | 32.363 | 29.745 | 29.133 | 30.414 |
+| R25: Discovery: tracks released in the last 30 days, ranked by streams | READ | 59.897 | 51.060 | 36.528 | 49.162 |
+| W01: Player: log a stream of track 1389 by user 1038 | WRITE | 3.856 | 0.387 | 0.334 | 1.526 |
+| W02: Heart button: user 1038 likes track 1389 | WRITE | 2.106 | 0.074 | 0.046 | 0.742 |
+| W03: "Add to playlist": append track 1389 to the end of playlist 501 | WRITE | 2.871 | 0.222 | 0.078 | 1.057 |
+| W04: Nightly job: recompute every artist's monthly listeners (last 28 days) | WRITE | 209.798 | 105.887 | 93.654 | 136.446 |
+| W05: Takedown: the label withdrew the whole album of track 1389, so remove its tracks from every playlist | WRITE | 22.523 | 14.782 | 14.963 | 17.423 |
+| **Total (sum of all 30)** | | 27391.252 | 26213.893 | 25643.989 | 26416.378 |
 
 Below the table, add for each query the **scan type** from the plan (Seq Scan, Index Scan, …) and one line on **why** it is slow or fast.
 
@@ -292,11 +292,39 @@ Make the queries faster. **The results must stay the same** (same rows; order ma
 ### 4.3 Deliverable: the optimization table
 In `docs/04_optimization_report.md`:
 
-| Query | Before (ms) | Problem found in the plan | Optimization applied | After (ms) | Improvement | Same result? |
-|-------|------------:|---------------------------|----------------------|-----------:|------------:|:------------:|
-| R04 | | e.g. Seq Scan on 250k streams | e.g. index on `streams(user_id, started_at DESC)` | | e.g. 99% (160×) | ✅ |
-| … all 30 … | | | | | | |
-| **Total** | | | | | | |
+| Query | Before (ms) | Baseline problem | Optimization | After (ms) | Improvement | Same result? |
+|---|---:|---|---|---:|---:|---|
+| R01 | 77.074 | Baseline stream and credit scans for one artist. | Artist/track lookup and track/time stream indexes. | 5.144 | 93.33% | SQL unchanged; see tie caveat |
+| R02 | 0.298 | Already selective via constraint index. | No rewrite or new index needed; existing album/disc/track UNIQUE index. | 0.103 | 65.44% | SQL unchanged; see tie caveat |
+| R03 | 108.711 | Leading-wildcard title search scans tracks. | GIN trigram title index for substring ILIKE. | 17.614 | 83.80% | SQL unchanged; see tie caveat |
+| R04 | 51.589 | User filter without user/time access path. | User/time covering stream index. | 1.034 | 98.00% | SQL unchanged; see tie caveat |
+| R05 | 2.315 | Small indexed playlist lookup; limited tuning need. | Unchanged; existing playlist, track and artist keys. | 1.110 | 52.07% | SQL unchanged; see tie caveat |
+| R06 | 0.768 | Liked-at sort after user-key lookup. | User/liked_at covering index. | 0.072 | 90.67% | SQL unchanged; see tie caveat |
+| R07 | 99.955 | Stream filtering and artist aggregation. | Time-leading covering stream index; no rewrite. | 59.413 | 40.56% | SQL unchanged; see tie caveat |
+| R08 | 110.253 | Stream/credit scans before per-track aggregation. | Artist/track and track/time indexes. | 2.378 | 97.84% | SQL unchanged; see tie caveat |
+| R09 | 56.704 | EXTRACT on timestamp plus user filtering. | Half-open year range; user/time covering index. | 0.537 | 99.05% | EXCEPT ALL + order-key checks |
+| R10 | 64.259 | Timestamp-to-date cast in filter. | Half-open month range; time-leading covering index. | 14.414 | 77.57% | EXCEPT ALL + order-key checks |
+| R11 | 3.112 | Albums lack artist-leading lookup. | Artist/release-date album index. | 0.134 | 95.69% | SQL unchanged; see tie caveat |
+| R12 | 174.892 | Age and explicit checks across joins. | No rewrite; planner may use the global timestamp index to serve newest-first limit. | 47.557 | 72.81% | SQL unchanged; see tie caveat |
+| R13 | 166.036 | NULL-sensitive NOT IN gives wrong empty result. | NOT EXISTS correctness fix; partial playlist-reference index. | 14.092 | 91.51% | Intentional correction |
+| R14 | 63.217 | Join and distinct contributor aggregation. | Unchanged; broad aggregation still required. | 33.806 | 46.52% | SQL unchanged; see tie caveat |
+| R15 | 17.324 | Follows PK leads with user rather than artist. | Artist/user reverse lookup index. | 3.120 | 81.99% | SQL unchanged; see tie caveat |
+| R16 | 97.907 | Distinct-listener aggregation. | Time-leading stream index and artist/track index available. | 42.714 | 56.37% | SQL unchanged; see tie caveat |
+| R17 | 40.955 | Date filter and user aggregation. | Time-leading stream index available; unchanged aggregation. | 13.123 | 67.96% | SQL unchanged; see tie caveat |
+| R18 | 102.702 | Full-stream aggregate. | Unchanged; all streams contribute to offline-share totals. | 109.708 | -6.82% | SQL unchanged; see tie caveat |
+| R19 | 39349.515 | Two correlated subqueries repeat per verified artist. | Aggregate artist stream statistics once and LEFT JOIN to artists. | 261.468 | 99.34% | EXCEPT ALL + order-key checks |
+| R20 | 600.215 | Full-stream join and hour extraction. | Unchanged; all streams must contribute to country/hour totals. | 494.412 | 17.63% | SQL unchanged; see tie caveat |
+| R21 | 0.320 | Already selective using ISRC UNIQUE index. | Unchanged; existing unique ISRC and album PK indexes. | 0.035 | 88.97% | SQL unchanged; see tie caveat |
+| R22 | 88.043 | Playlist/track grouping differs from PK order. | No added index retained; planner favors full scan and hash aggregation. | 87.856 | 0.21% | SQL unchanged; see tie caveat |
+| R23 | 180.939 | Sort and skip 200,000 rows. | Timestamp covering index; retain OFFSET and original ordering semantics. | 40.310 | 77.72% | SQL unchanged; see tie caveat |
+| R24 | 52.061 | Full-track join/aggregate. | Unchanged; full catalogue aggregation remains necessary. | 43.909 | 15.66% | SQL unchanged; see tie caveat |
+| R25 | 86.818 | Recent-album filtering and stream counting. | Release-date and track/time indexes; retain LEFT JOIN and zero-stream tracks. | 2.789 | 96.79% | SQL unchanged; see tie caveat |
+| W01 | 1.719 | Insert integrity and index-maintenance cost. | Maintain four added stream indexes (partial playlist index only for applicable rows). | 1.200 | 30.21% | SQL unchanged; see tie caveat |
+| W02 | 0.868 | Unique-conflict handling; may be a no-op. | Maintain added user/liked_at index when a like is actually inserted. | 0.925 | -6.57% | SQL unchanged; see tie caveat |
+| W03 | 1.654 | Append lookup and index maintenance. | Maintain the added track-leading playlist-entry index on insert. | 0.697 | 57.86% | SQL unchanged; see tie caveat |
+| W04 | 255.717 | Full artist-count refresh. | Artist/track and track/time indexes available; batch update unchanged. | 154.614 | 39.54% | SQL unchanged; see tie caveat |
+| W05 | 33.507 | Playlist entries lack track-leading lookup. | Track-leading playlist-entry index and existing album track key. | 0.359 | 98.93% | SQL unchanged; see tie caveat |
+| **Total** | **41889.449** | | | **1454.649** | **96.53%** | Includes corrected R13 |
 
 Improvement % = (before − after) / before × 100
 
