@@ -292,11 +292,39 @@ Make the queries faster. **The results must stay the same** (same rows; order ma
 ### 4.3 Deliverable: the optimization table
 In `docs/04_optimization_report.md`:
 
-| Query | Before (ms) | Problem found in the plan | Optimization applied | After (ms) | Improvement | Same result? |
-|-------|------------:|---------------------------|----------------------|-----------:|------------:|:------------:|
-| R04 | | e.g. Seq Scan on 250k streams | e.g. index on `streams(user_id, started_at DESC)` | | e.g. 99% (160×) | ✅ |
-| … all 30 … | | | | | | |
-| **Total** | | | | | | |
+| Query | Before (ms) | Baseline problem | Optimization | After (ms) | Improvement | Same result? |
+|---|---:|---|---|---:|---:|---|
+| R01 | 77.074 | Baseline stream and credit scans for one artist. | Artist/track lookup and track/time stream indexes. | 5.144 | 93.33% | SQL unchanged; see tie caveat |
+| R02 | 0.298 | Already selective via constraint index. | No rewrite or new index needed; existing album/disc/track UNIQUE index. | 0.103 | 65.44% | SQL unchanged; see tie caveat |
+| R03 | 108.711 | Leading-wildcard title search scans tracks. | GIN trigram title index for substring ILIKE. | 17.614 | 83.80% | SQL unchanged; see tie caveat |
+| R04 | 51.589 | User filter without user/time access path. | User/time covering stream index. | 1.034 | 98.00% | SQL unchanged; see tie caveat |
+| R05 | 2.315 | Small indexed playlist lookup; limited tuning need. | Unchanged; existing playlist, track and artist keys. | 1.110 | 52.07% | SQL unchanged; see tie caveat |
+| R06 | 0.768 | Liked-at sort after user-key lookup. | User/liked_at covering index. | 0.072 | 90.67% | SQL unchanged; see tie caveat |
+| R07 | 99.955 | Stream filtering and artist aggregation. | Time-leading covering stream index; no rewrite. | 59.413 | 40.56% | SQL unchanged; see tie caveat |
+| R08 | 110.253 | Stream/credit scans before per-track aggregation. | Artist/track and track/time indexes. | 2.378 | 97.84% | SQL unchanged; see tie caveat |
+| R09 | 56.704 | EXTRACT on timestamp plus user filtering. | Half-open year range; user/time covering index. | 0.537 | 99.05% | EXCEPT ALL + order-key checks |
+| R10 | 64.259 | Timestamp-to-date cast in filter. | Half-open month range; time-leading covering index. | 14.414 | 77.57% | EXCEPT ALL + order-key checks |
+| R11 | 3.112 | Albums lack artist-leading lookup. | Artist/release-date album index. | 0.134 | 95.69% | SQL unchanged; see tie caveat |
+| R12 | 174.892 | Age and explicit checks across joins. | No rewrite; planner may use the global timestamp index to serve newest-first limit. | 47.557 | 72.81% | SQL unchanged; see tie caveat |
+| R13 | 166.036 | NULL-sensitive NOT IN gives wrong empty result. | NOT EXISTS correctness fix; partial playlist-reference index. | 14.092 | 91.51% | Intentional correction |
+| R14 | 63.217 | Join and distinct contributor aggregation. | Unchanged; broad aggregation still required. | 33.806 | 46.52% | SQL unchanged; see tie caveat |
+| R15 | 17.324 | Follows PK leads with user rather than artist. | Artist/user reverse lookup index. | 3.120 | 81.99% | SQL unchanged; see tie caveat |
+| R16 | 97.907 | Distinct-listener aggregation. | Time-leading stream index and artist/track index available. | 42.714 | 56.37% | SQL unchanged; see tie caveat |
+| R17 | 40.955 | Date filter and user aggregation. | Time-leading stream index available; unchanged aggregation. | 13.123 | 67.96% | SQL unchanged; see tie caveat |
+| R18 | 102.702 | Full-stream aggregate. | Unchanged; all streams contribute to offline-share totals. | 109.708 | -6.82% | SQL unchanged; see tie caveat |
+| R19 | 39349.515 | Two correlated subqueries repeat per verified artist. | Aggregate artist stream statistics once and LEFT JOIN to artists. | 261.468 | 99.34% | EXCEPT ALL + order-key checks |
+| R20 | 600.215 | Full-stream join and hour extraction. | Unchanged; all streams must contribute to country/hour totals. | 494.412 | 17.63% | SQL unchanged; see tie caveat |
+| R21 | 0.320 | Already selective using ISRC UNIQUE index. | Unchanged; existing unique ISRC and album PK indexes. | 0.035 | 88.97% | SQL unchanged; see tie caveat |
+| R22 | 88.043 | Playlist/track grouping differs from PK order. | No added index retained; planner favors full scan and hash aggregation. | 87.856 | 0.21% | SQL unchanged; see tie caveat |
+| R23 | 180.939 | Sort and skip 200,000 rows. | Timestamp covering index; retain OFFSET and original ordering semantics. | 40.310 | 77.72% | SQL unchanged; see tie caveat |
+| R24 | 52.061 | Full-track join/aggregate. | Unchanged; full catalogue aggregation remains necessary. | 43.909 | 15.66% | SQL unchanged; see tie caveat |
+| R25 | 86.818 | Recent-album filtering and stream counting. | Release-date and track/time indexes; retain LEFT JOIN and zero-stream tracks. | 2.789 | 96.79% | SQL unchanged; see tie caveat |
+| W01 | 1.719 | Insert integrity and index-maintenance cost. | Maintain four added stream indexes (partial playlist index only for applicable rows). | 1.200 | 30.21% | SQL unchanged; see tie caveat |
+| W02 | 0.868 | Unique-conflict handling; may be a no-op. | Maintain added user/liked_at index when a like is actually inserted. | 0.925 | -6.57% | SQL unchanged; see tie caveat |
+| W03 | 1.654 | Append lookup and index maintenance. | Maintain the added track-leading playlist-entry index on insert. | 0.697 | 57.86% | SQL unchanged; see tie caveat |
+| W04 | 255.717 | Full artist-count refresh. | Artist/track and track/time indexes available; batch update unchanged. | 154.614 | 39.54% | SQL unchanged; see tie caveat |
+| W05 | 33.507 | Playlist entries lack track-leading lookup. | Track-leading playlist-entry index and existing album track key. | 0.359 | 98.93% | SQL unchanged; see tie caveat |
+| **Total** | **41889.449** | | | **1454.649** | **96.53%** | Includes corrected R13 |
 
 Improvement % = (before − after) / before × 100
 
