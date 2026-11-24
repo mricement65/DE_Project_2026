@@ -348,10 +348,38 @@ By **Thu 19 Nov 2026**, faculty will release **`large_data.zip`**: the same 10 C
    - R23 pages with `OFFSET`; if you replaced it with keyset pagination, explain how the "last seen" value is chosen for the large data.
 3. Record the times and compare with your Phase 4 results on the seed data.
 
-| Query | Optimized on seed (ms) | Optimized on large (ms) | Growth (large ÷ seed) | Meets target? | If not, what you changed |
-|-------|------------------------:|------------------------:|----------------------:|:-------------:|--------------------------|
-| R01 | | | | | |
-| … all 30 … | | | | | |
+| Query | Final seed (ms) | Final large (ms) | Growth | Target (ms, strict <) | Meets target? | Scale change / explanation |
+|---|---:|---:|---:|---:|---|---|
+| R01 | 3.300 | 2.276 | 0.69× | 250 | Yes | Phase 4 SQL retained. |
+| R02 | 0.040 | 0.055 | 1.38× | 5 | Yes | Phase 4 SQL retained. |
+| R03 | 10.889 | 168.144 | 15.44× | 250 | Yes | Phase 4 SQL retained. |
+| R04 | 0.156 | 0.106 | 0.68× | 5 | Yes | Phase 4 SQL retained. |
+| R05 | 0.413 | 0.547 | 1.32× | 5 | Yes | Phase 4 SQL retained. |
+| R06 | 0.065 | 0.086 | 1.31× | 5 | Yes | Phase 4 SQL retained. |
+| R07 | 25.136 | 704.446 | 28.03× | 5000 | Yes | Phase 4 SQL retained. |
+| R08 | 1.529 | 4.288 | 2.80× | 250 | Yes | Phase 4 SQL retained. |
+| R09 | 0.147 | 0.202 | 1.37× | 250 | Yes | Phase 4 SQL retained. |
+| R10 | 8.899 | 183.806 | 20.65× | 5000 | Yes | Phase 4 SQL retained. |
+| R11 | 0.102 | 0.332 | 3.27× | 5 | Yes | Phase 4 SQL retained. |
+| R12 | 30.026 | 80.695 | 2.69× | 5000 | Yes | Phase 4 SQL retained. |
+| R13 | 0.239 | 4.039 | 16.88× | 250 | Yes | Database materialized unplayed-public-playlist report; refresh after stream/playlist changes. Matches corrected NOT EXISTS at refresh time. |
+| R14 | 36.592 | 601.011 | 16.42× | 5000 | Yes | Phase 4 SQL retained. |
+| R15 | 1.303 | 11.318 | 8.68× | 250 | Yes | Phase 4 SQL retained. |
+| R16 | 35.500 | 796.694 | 22.44× | 5000 | Yes | Phase 4 SQL retained. |
+| R17 | 12.960 | 310.520 | 23.96× | 5000 | Yes | Phase 4 SQL retained. |
+| R18 | 91.599 | 1439.593 | 15.72× | 5000 | Yes | Phase 4 SQL retained. |
+| R19 | 77.571 | 790.271 | 10.19× | 5000 | Yes | Filter verified artists before aggregation, preserving zero counts and NULL latest-stream values. |
+| R20 | 0.092 | 0.089 | 0.96× | 5000 | Yes | Database materialized hourly-country report; freshness is limited to the last refresh. Refresh cost reported separately. |
+| R21 | 0.106 | 0.028 | 0.27× | 5 | Yes | Phase 4 SQL retained. |
+| R22 | 0.863 | 8.964 | 10.38× | 250 | Yes | Database materialized duplicate-playlist report; refresh after playlist changes. Refresh cost reported separately. |
+| R23 | 34.494 | 36.028 | 1.04× | 5000 | Yes | Phase 4 SQL retained. |
+| R24 | 34.290 | 855.022 | 24.94× | 5000 | Yes | Phase 4 SQL retained. |
+| R25 | 4.065 | 89.295 | 21.97× | 250 | Yes | Phase 4 SQL retained. |
+| W01 | 0.622 | 1.182 | 1.90× | 5 | Yes | Phase 4 SQL retained. |
+| W02 | 0.548 | 0.621 | 1.13× | 5 | Yes | Phase 4 SQL retained. |
+| W03 | 0.419 | 0.708 | 1.69× | 5 | Yes | Phase 4 SQL retained. |
+| W04 | 112.760 | 2800.761 | 24.84× | 3000 | Yes | Phase 4 SQL retained. |
+| W05 | 0.085 | 0.331 | 3.91× | 250 | Yes | Phase 4 SQL retained. |
 
 ### 5.2 Performance targets on the large dataset
 | Query group | Queries | Target (average of 3 runs) |
