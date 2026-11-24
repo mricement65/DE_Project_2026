@@ -4,61 +4,61 @@
 
 **Status:** Provisional workspace measurements. Rerun seed and large workloads on the same team laptop before submission.
 
-**Environment:** Isolated workspace; AMD EPYC 7763; PostgreSQL 17.12 single-user mode; Asia/Kolkata; provisional, not a team-laptop server run
+**Environment:** Uploaded CSV run on 24 November 2026; AMD EPYC 7763; PostgreSQL 17.12 single-user mode; Asia/Kolkata; provisional workspace measurements
 
 ## Dataset and method
 
-The faculty release at https://github.com/edusatyaki/DBMS-Spotify-Music-Streaming/releases/tag/large-data supplied the actual large_data.zip. SHA-256: `04159f37b0276fdf5d63c2781f90f8d339be1ad0f1ad6bbafb9c0caa11b02dbd`. No synthetic expansion or estimated query times were substituted. The large schema was loaded in a separate database using the same Phase 2 schema, followed by the Phase 4 indexes and ANALYZE. Only optimized queries were benchmarked on large data.
+The ten CSV files uploaded by the user on 24 November 2026 are the sole large-data input for this run. Their names, SHA-256 fingerprints, byte sizes, headers and parsed row counts are recorded in benchmarks/results/large/input_manifest.json. No replacement CSVs were downloaded and no source rows were synthesized for this run. They contain 5,000,000 streams. The uploads were loaded into a new database using the current Phase 2 schema, followed by the Phase 4 indexes and ANALYZE. All PK, FK, UNIQUE, NOT NULL and CHECK constraints remained enabled. Only optimized queries were benchmarked on large data.
 
 Each query has three EXPLAIN (ANALYZE, BUFFERS) executions. Writes run in individual rolled-back transactions. Times below are Execution Time, not client time. All runs, including slow first runs, are retained. Session timezone is Asia/Kolkata. The final seed and final large columns use the same final query versions and scale fixes; initial-large plans preserve the Phase 4 query versions before scale fixes.
 
-The workspace uses a single-user backend, one fresh backend per query with three consecutive runs. It has no normal-server parallel workers/autovacuum and differs from the team MacBook. Cache state, background activity and planner behavior may differ. Results are diagnostic evidence, not production SLA guarantees.
+The workspace uses a single-user backend, one fresh backend per query with three consecutive runs. It has no normal-server parallel workers/autovacuum and differs from a normal PostgreSQL server on the team laptop. Cache state, background activity and planner behavior may differ. Results are diagnostic evidence, not production SLA guarantees.
 
 ## Results: all 30 queries
 
 | Query | Final seed (ms) | Final large (ms) | Growth | Target (ms, strict <) | Meets target? | Scale change / explanation |
 |---|---:|---:|---:|---:|---|---|
-| R01 | 3.757 | 1.973 | 0.53× | 250 | Yes | Phase 4 SQL retained. |
-| R02 | 0.054 | 0.039 | 0.72× | 5 | Yes | Phase 4 SQL retained. |
-| R03 | 10.808 | 188.066 | 17.40× | 250 | Yes | Phase 4 SQL retained. |
-| R04 | 0.122 | 0.118 | 0.97× | 5 | Yes | Phase 4 SQL retained. |
-| R05 | 0.370 | 0.435 | 1.18× | 5 | Yes | Phase 4 SQL retained. |
-| R06 | 0.082 | 0.121 | 1.47× | 5 | Yes | Phase 4 SQL retained. |
-| R07 | 30.103 | 862.266 | 28.64× | 5000 | Yes | Phase 4 SQL retained. |
-| R08 | 1.722 | 4.243 | 2.46× | 250 | Yes | Phase 4 SQL retained. |
-| R09 | 0.162 | 0.264 | 1.62× | 250 | Yes | Phase 4 SQL retained. |
-| R10 | 10.616 | 196.059 | 18.47× | 5000 | Yes | Phase 4 SQL retained. |
-| R11 | 0.453 | 0.386 | 0.85× | 5 | Yes | Phase 4 SQL retained. |
-| R12 | 31.464 | 93.719 | 2.98× | 5000 | Yes | Phase 4 SQL retained. |
-| R13 | 0.212 | 4.474 | 21.10× | 250 | Yes | Database materialized unplayed-public-playlist report; refresh after stream/playlist changes. Matches corrected NOT EXISTS at refresh time. |
-| R14 | 30.253 | 550.266 | 18.19× | 5000 | Yes | Phase 4 SQL retained. |
-| R15 | 2.194 | 17.176 | 7.83× | 250 | Yes | Phase 4 SQL retained. |
-| R16 | 35.219 | 912.117 | 25.90× | 5000 | Yes | Phase 4 SQL retained. |
-| R17 | 10.650 | 395.878 | 37.17× | 5000 | Yes | Phase 4 SQL retained. |
-| R18 | 77.559 | 1550.449 | 19.99× | 5000 | Yes | Phase 4 SQL retained. |
-| R19 | 65.471 | 860.525 | 13.14× | 5000 | Yes | Filter verified artists before aggregation, preserving zero counts and NULL latest-stream values. |
-| R20 | 0.084 | 0.121 | 1.44× | 5000 | Yes | Database materialized hourly-country report; freshness is limited to the last refresh. Refresh cost reported separately. |
-| R21 | 0.141 | 0.047 | 0.33× | 5 | Yes | Phase 4 SQL retained. |
-| R22 | 0.958 | 11.539 | 12.05× | 250 | Yes | Database materialized duplicate-playlist report; refresh after playlist changes. Refresh cost reported separately. |
-| R23 | 49.537 | 36.671 | 0.74× | 5000 | Yes | Phase 4 SQL retained. |
-| R24 | 55.291 | 1001.725 | 18.12× | 5000 | Yes | Phase 4 SQL retained. |
-| R25 | 3.457 | 106.254 | 30.74× | 250 | Yes | Phase 4 SQL retained. |
-| W01 | 0.920 | 0.636 | 0.69× | 5 | Yes | Phase 4 SQL retained. |
-| W02 | 0.743 | 0.507 | 0.68× | 5 | Yes | Phase 4 SQL retained. |
-| W03 | 0.488 | 0.543 | 1.11× | 5 | Yes | Phase 4 SQL retained. |
-| W04 | 71.895 | 1745.131 | 24.27× | 3000 | Yes | Aggregate recent stream listeners first, then update every artist including zero-listener artists. |
-| W05 | 0.101 | 0.610 | 6.06× | 250 | Yes | Phase 4 SQL retained. |
+| R01 | 3.300 | 2.276 | 0.69× | 250 | Yes | Phase 4 SQL retained. |
+| R02 | 0.040 | 0.055 | 1.38× | 5 | Yes | Phase 4 SQL retained. |
+| R03 | 10.889 | 168.144 | 15.44× | 250 | Yes | Phase 4 SQL retained. |
+| R04 | 0.156 | 0.106 | 0.68× | 5 | Yes | Phase 4 SQL retained. |
+| R05 | 0.413 | 0.547 | 1.32× | 5 | Yes | Phase 4 SQL retained. |
+| R06 | 0.065 | 0.086 | 1.31× | 5 | Yes | Phase 4 SQL retained. |
+| R07 | 25.136 | 704.446 | 28.03× | 5000 | Yes | Phase 4 SQL retained. |
+| R08 | 1.529 | 4.288 | 2.80× | 250 | Yes | Phase 4 SQL retained. |
+| R09 | 0.147 | 0.202 | 1.37× | 250 | Yes | Phase 4 SQL retained. |
+| R10 | 8.899 | 183.806 | 20.65× | 5000 | Yes | Phase 4 SQL retained. |
+| R11 | 0.102 | 0.332 | 3.27× | 5 | Yes | Phase 4 SQL retained. |
+| R12 | 30.026 | 80.695 | 2.69× | 5000 | Yes | Phase 4 SQL retained. |
+| R13 | 0.239 | 4.039 | 16.88× | 250 | Yes | Database materialized unplayed-public-playlist report; refresh after stream/playlist changes. Matches corrected NOT EXISTS at refresh time. |
+| R14 | 36.592 | 601.011 | 16.42× | 5000 | Yes | Phase 4 SQL retained. |
+| R15 | 1.303 | 11.318 | 8.68× | 250 | Yes | Phase 4 SQL retained. |
+| R16 | 35.500 | 796.694 | 22.44× | 5000 | Yes | Phase 4 SQL retained. |
+| R17 | 12.960 | 310.520 | 23.96× | 5000 | Yes | Phase 4 SQL retained. |
+| R18 | 91.599 | 1439.593 | 15.72× | 5000 | Yes | Phase 4 SQL retained. |
+| R19 | 77.571 | 790.271 | 10.19× | 5000 | Yes | Filter verified artists before aggregation, preserving zero counts and NULL latest-stream values. |
+| R20 | 0.092 | 0.089 | 0.96× | 5000 | Yes | Database materialized hourly-country report; freshness is limited to the last refresh. Refresh cost reported separately. |
+| R21 | 0.106 | 0.028 | 0.27× | 5 | Yes | Phase 4 SQL retained. |
+| R22 | 0.863 | 8.964 | 10.38× | 250 | Yes | Database materialized duplicate-playlist report; refresh after playlist changes. Refresh cost reported separately. |
+| R23 | 34.494 | 36.028 | 1.04× | 5000 | Yes | Phase 4 SQL retained. |
+| R24 | 34.290 | 855.022 | 24.94× | 5000 | Yes | Phase 4 SQL retained. |
+| R25 | 4.065 | 89.295 | 21.97× | 250 | Yes | Phase 4 SQL retained. |
+| W01 | 0.622 | 1.182 | 1.90× | 5 | Yes | Phase 4 SQL retained. |
+| W02 | 0.548 | 0.621 | 1.13× | 5 | Yes | Phase 4 SQL retained. |
+| W03 | 0.419 | 0.708 | 1.69× | 5 | Yes | Phase 4 SQL retained. |
+| W04 | 112.760 | 2800.761 | 24.84× | 3000 | Yes | Phase 4 SQL retained. |
+| W05 | 0.085 | 0.331 | 3.91× | 250 | Yes | Phase 4 SQL retained. |
 
-**30/30** final queries meet their stated target in this run. Exactly equal to a target is a miss because the brief says “under”. CSV averages are rounded to three decimals; target checks use unrounded means.
+**30/30** final query averages are below their stated target in this run. For materialized reports, this counts snapshot SELECT latency only, not live recomputation; see the freshness qualification and refresh costs below. Exactly equal to a target is a miss because the brief says “under”. CSV averages are rounded to three decimals; target checks use unrounded means.
 
 ## Growth analysis
 
 Streams grew exactly 20×. Other table ratios are recorded in counts.csv. Categories below describe observed final-query averages, not predicted complexity:
 
-- **Approximately constant (≤2×):** R01 (0.5×), R02 (0.7×), R04 (1.0×), R05 (1.2×), R06 (1.5×), R09 (1.6×), R11 (0.9×), R20 (1.4×), R21 (0.3×), R23 (0.7×), W01 (0.7×), W02 (0.7×), W03 (1.1×).
-- **Sublinear relative to 20× data (>2×, <10×):** R08 (2.5×), R12 (3.0×), R15 (7.8×), W05 (6.1×).
-- **Near linear or somewhat sublinear (10×–20×):** R03 (17.4×), R10 (18.5×), R14 (18.2×), R18 (20.0×), R19 (13.1×), R22 (12.0×), R24 (18.1×).
-- **More than 20×:** R07 (28.6×), R13 (21.1×), R16 (25.9×), R17 (37.2×), R25 (30.7×), W04 (24.3×).
+- **Approximately constant (≤2×):** R01 (0.7×), R02 (1.4×), R04 (0.7×), R05 (1.3×), R06 (1.3×), R09 (1.4×), R20 (1.0×), R21 (0.3×), R23 (1.0×), W01 (1.9×), W02 (1.1×), W03 (1.7×).
+- **Sublinear relative to 20× data (>2×, <10×):** R08 (2.8×), R11 (3.3×), R12 (2.7×), R15 (8.7×), W05 (3.9×).
+- **Near linear or somewhat sublinear (10×–20×):** R03 (15.4×), R13 (16.9×), R14 (16.4×), R18 (15.7×), R19 (10.2×), R22 (10.4×).
+- **More than 20×:** R07 (28.0×), R10 (20.7×), R16 (22.4×), R17 (24.0×), R24 (24.9×), R25 (22.0×), W04 (24.8×).
 
 Selective key lookups can remain nearly constant when they return a fixed number of rows. Whole-table aggregates and joins grow with rows visited and may spill as working sets exceed memory. The large dataset is not uniform duplication, so selectivity, number of returned groups and skew also change. Tiny seed timings and first-run cache effects can inflate ratios; raw buffers, rows, loops and sort methods must support any causal claim. Refreshed materialized views shift computation to refresh time; low query growth does not imply low refresh growth.
 
@@ -66,78 +66,130 @@ Selective key lookups can remain nearly constant when they return a fixed number
 
 | Changed query | Initial large (ms) | Final large (ms) | Action |
 |---|---:|---:|---|
-| R13 | 387.876 | 4.474 | Database materialized unplayed-public-playlist report; refresh after stream/playlist changes. Matches corrected NOT EXISTS at refresh time. |
-| R19 | 6866.800 | 860.525 | Filter verified artists before aggregation, preserving zero counts and NULL latest-stream values. |
-| R20 | 10564.045 | 0.121 | Database materialized hourly-country report; freshness is limited to the last refresh. Refresh cost reported separately. |
-| R22 | 1696.415 | 11.539 | Database materialized duplicate-playlist report; refresh after playlist changes. Refresh cost reported separately. |
-| W04 | 3195.427 | 1745.131 | Aggregate recent stream listeners first, then update every artist including zero-listener artists. |
+| R13 | 401.238 | 4.039 | Database materialized unplayed-public-playlist report; refresh after stream/playlist changes. Matches corrected NOT EXISTS at refresh time. |
+| R19 | 6553.352 | 790.271 | Filter verified artists before aggregation, preserving zero counts and NULL latest-stream values. |
+| R20 | 10096.489 | 0.089 | Database materialized hourly-country report; freshness is limited to the last refresh. Refresh cost reported separately. |
+| R22 | 1462.526 | 8.964 | Database materialized duplicate-playlist report; refresh after playlist changes. Refresh cost reported separately. |
 
 Complete run-3 initial/final plans for each changed query appear in [`05_scale_plan_comparisons.md`](05_scale_plan_comparisons.md); all three raw plans are retained. The original Phase 4 file is preserved as `sql/06_optimized_queries.sql`; scale-specific versions are in `sql/06_large_optimized_queries.sql`.
 
 R23 still uses OFFSET 200000 and therefore needs no cursor selection. It keeps the same requested page on each dataset and still pays to skip entries. A future keyset interface must use the previous page’s last timestamp plus a unique tie-breaker, not an invented seed-data cursor.
 
-## Correctness and refresh evidence
 
-Comparisons were run after refreshing reports and with no concurrent source writes. Each result comparison used row counts and bidirectional EXCEPT ALL; declared sort-key sequences were checked where applicable. Tied rows retain the original SQL’s unspecified tie order.
+## Phase 4 SQL on seed versus uploaded large data
 
-| Dataset | Query | Phase 4 rows | Final rows | Differing rows | Order keys |
-|---|---|---:|---:|---:|---|
-| seed_final | R13 | 1891 | 1891 | 0 | Not specified / update |
-| seed_final | R19 | 334 | 334 | 0 | Match |
-| seed_final | R20 | 96 | 96 | 0 | Match |
-| seed_final | R22 | 1800 | 1800 | 0 | Match |
-| seed_final | W04 | 3000 | 3000 | 0 | Not specified / update |
-| large | R13 | 37933 | 37933 | 0 | Not specified / update |
-| large | R19 | 3249 | 3249 | 0 | Match |
-| large | R20 | 96 | 96 | 0 | Match |
-| large | R22 | 36000 | 36000 | 0 | Match |
-| large | W04 | 60000 | 60000 | 0 | Not specified / update |
+This additional table holds the query definitions and Phase 4 indexes constant. Both datasets were freshly measured on the same workspace host. It is the direct scale comparison before the Phase 5 fixes; it does not mix older-host Phase 4 timings with these new measurements.
 
-For W04, the final UPDATE ran in a rolled-back transaction; RETURNING values were compared to the original monthly-listener calculation for every artist. These checks prove equality on the tested datasets at the captured snapshot, not perpetual equivalence of materialized views after later writes.
+| Query | Seed, Phase 4 SQL (ms) | Large, Phase 4 SQL (ms) | Growth | Initial target met? |
+|---|---:|---:|---:|---|
+| R01 | 3.517 | 2.011 | 0.57× | Yes |
+| R02 | 0.048 | 0.068 | 1.43× | Yes |
+| R03 | 7.952 | 205.660 | 25.86× | Yes |
+| R04 | 0.478 | 0.225 | 0.47× | Yes |
+| R05 | 0.349 | 0.415 | 1.19× | Yes |
+| R06 | 0.075 | 0.085 | 1.13× | Yes |
+| R07 | 32.005 | 783.345 | 24.48× | Yes |
+| R08 | 1.384 | 4.520 | 3.27× | Yes |
+| R09 | 0.374 | 0.891 | 2.39× | Yes |
+| R10 | 8.414 | 181.013 | 21.51× | Yes |
+| R11 | 0.121 | 0.271 | 2.24× | Yes |
+| R12 | 29.754 | 121.592 | 4.09× | Yes |
+| R13 | 6.905 | 401.238 | 58.11× | No |
+| R14 | 27.811 | 581.149 | 20.90× | Yes |
+| R15 | 1.454 | 10.425 | 7.17× | Yes |
+| R16 | 38.136 | 1006.341 | 26.39× | Yes |
+| R17 | 18.761 | 376.218 | 20.05× | Yes |
+| R18 | 85.611 | 1578.288 | 18.44× | Yes |
+| R19 | 232.790 | 6553.352 | 28.15× | No |
+| R20 | 428.592 | 10096.489 | 23.56× | No |
+| R21 | 0.139 | 0.064 | 0.46× | Yes |
+| R22 | 83.833 | 1462.526 | 17.45× | No |
+| R23 | 43.870 | 34.930 | 0.80× | Yes |
+| R24 | 56.902 | 863.179 | 15.17× | Yes |
+| R25 | 7.931 | 88.284 | 11.13× | Yes |
+| W01 | 0.815 | 0.905 | 1.11× | Yes |
+| W02 | 0.830 | 0.674 | 0.81× | Yes |
+| W03 | 0.634 | 0.641 | 1.01× | Yes |
+| W04 | 137.608 | 2603.297 | 18.92× | Yes |
+| W05 | 0.306 | 0.395 | 1.29× | Yes |
+## What the measured plans show
 
-### Refresh cost (excluded from timed report SELECTs)
+The observations below use initial-large run 3 consistently; the raw files retain all three runs. These are measured row counts and plan operations, not assumed complexity.
 
-| Dataset | View | Refresh elapsed (ms) | Refresh completed |
+| Query | Observed scale problem | Tested change and its limit |
+|---|---|---|
+| R13 | The merge anti-join returns 37,933 playlists, but visits 126,153 public playlists and 2,248,413 entries in the partial stream index. An index-only scan avoids heap fetches yet still performs substantial work. | Materialize the corrected NOT EXISTS report. Reads scan the stored result; refresh pays for the anti-join. A newly played playlist is reflected only after refresh. |
+| R19 | The original aggregate reads 5,000,000 streams and 1,554,720 artist credits, forms 5,714,457 joined rows and aggregates all 60,000 artists, although the final report contains only 3,249 verified artists. The artist-credit hash uses 16 batches, with temporary I/O. | Filter verified artists before the stream aggregation. Keep the outer LEFT JOIN and COALESCE so verified artists with no streams still return zero and a NULL last-stream timestamp. This is a live, result-preserving rewrite. |
+| R20 | All 5,000,000 streams are joined with 600,000 users. The plan sorts 5,000,000 rows with an external merge using 87,760 kB of disk, then produces only 96 country/hour groups. The join hash also uses four batches. | Materialize the country/hour aggregate. Reads visit 96 stored groups; the large join and grouping move to refresh time. Use a fixed Asia/Kolkata timezone at refresh and a documented freshness policy. |
+| R22 | The plan scans 2,400,008 playlist entries and incrementally sorts them by playlist and track. It discards 2,328,008 singleton groups and returns 36,000 duplicate groups. The existing primary-key order is playlist/position, not playlist/track. | Materialize the duplicate-group report. The report retains the requested copies-descending, playlist-ascending order; refresh is required after playlist changes. |
+
+The refresh-based changes are proposals for reporting endpoints with an accepted snapshot policy. They are not equivalent to live recomputation under concurrent writes. For an always-current contract, the initial-large direct-query results remain the applicable measurements and their target misses remain unresolved by these snapshots. Alternatives to evaluate on the team server include expression statistics/hash aggregation for R20, a playlist/track covering index for R22, and different anti-join strategies for R13; no performance is claimed for those untested alternatives.
+
+W04 was below its 3,000 ms target in the initial upload run and was deliberately left unchanged. R23 keeps OFFSET 200000; no fabricated large-data cursor or result-changing LIMIT was introduced. No source-table indexes or server settings were added after the initial Phase 4 setup; the scale DDL adds only reporting relations and their indexes.
+
+The final W04 mean is 2,800.761 ms, leaving only about 6.6% below its 3,000 ms average target; its first run took 3,135.983 ms. Passing the specified three-run mean is not a tail-latency guarantee. Cache state, concurrent load and dead tuples left by rolled-back updates remain reasons to rerun on the actual server.
+
+
+## Result equivalence and refresh cost
+
+Every changed query was checked against the Phase 4 version on both datasets. Bidirectional EXCEPT ALL compares multiplicities, not just distinct rows. W04 was not rewritten in this upload run; all measured writes used individual BEGIN/ROLLBACK transactions. Ordered-key checks respect unspecified ordering among ties.
+
+| Dataset | Query | Phase 4 rows | Final rows | Differing rows |
+|---|---|---:|---:|---:|
+| seed_final | R13 | 1891 | 1891 | 0 |
+| seed_final | R19 | 334 | 334 | 0 |
+| seed_final | R20 | 96 | 96 | 0 |
+| seed_final | R22 | 1800 | 1800 | 0 |
+| large | R13 | 37933 | 37933 | 0 |
+| large | R19 | 3249 | 3249 | 0 |
+| large | R20 | 96 | 96 | 0 |
+| large | R22 | 36000 | 36000 | 0 |
+
+### Reporting snapshots are a conditional optimization
+
+For selected materialized-report queries, equality holds at the refresh snapshot. The measured SELECT latency excludes refresh work. This does **not** demonstrate the same latency for an always-current report after source writes. If the application requires immediate freshness, retain the direct Phase 4 query and its measured initial-large target result. Do not silently substitute a stale report. No application cache is used.
+
+The following are single observed refresh durations, not three-run averages. Refresh timestamps mark completion; with concurrent source writes they are not guarantees that every write before that timestamp is represented. This isolated run had no concurrent writer. The script uses ordinary blocking REFRESH; schedule it according to the accepted freshness policy and prevent overlaps.
+
+| Dataset | View | Refresh duration (ms) | Refresh completed at |
 |---|---|---:|---|
-| seed_final | report_country_hour | 325.506 | 2026-11-23 20:42:18.147843+05:30 |
-| seed_final | report_playlist_duplicates | 245.993 | 2026-11-23 20:42:18.397472+05:30 |
-| seed_final | report_unplayed_playlists | 47.255 | 2026-11-23 20:42:17.815839+05:30 |
-| large | report_country_hour | 5218.726 | 2026-11-23 20:42:29.693892+05:30 |
-| large | report_playlist_duplicates | 1621.406 | 2026-11-23 20:42:31.31854+05:30 |
-| large | report_unplayed_playlists | 377.380 | 2026-11-23 20:42:24.416762+05:30 |
-
-Refresh timings are measured inside PostgreSQL with clock_timestamp around REFRESH MATERIALIZED VIEW. They are one refresh per view, not three-run query averages. The reported initial refresh populates an empty view and includes its index maintenance. Subsequent refreshes may differ. Standard refresh blocks readers; a unique index exists to permit evaluation of concurrent refresh later. No external result cache is used.
-
-R13/R20/R22 now have a reporting-snapshot freshness contract. They are not suitable for a caller requiring immediate visibility of every new stream or playlist edit unless refreshed first. If that freshness tradeoff is unacceptable, keep the direct Phase 4 queries and report their target misses.
+| seed_final | report_country_hour | 233.044 | 2026-11-24 20:49:35.160981+05:30 |
+| seed_final | report_playlist_duplicates | 87.450 | 2026-11-24 20:49:35.251117+05:30 |
+| seed_final | report_unplayed_playlists | 15.118 | 2026-11-24 20:49:34.922805+05:30 |
+| large | report_country_hour | 5296.647 | 2026-11-24 20:49:46.018635+05:30 |
+| large | report_playlist_duplicates | 1315.282 | 2026-11-24 20:49:47.338676+05:30 |
+| large | report_unplayed_playlists | 389.999 | 2026-11-24 20:49:40.669768+05:30 |
 
 
-## Storage and actual row counts
+## Storage and loaded row counts
 
-Sizes were measured after final benchmarks and before creating the extra partitioned streams copy. Database bytes include catalogs/free space; table_bytes includes TOAST and auxiliary forks, and index_bytes is reported separately. Materialized views and their indexes are included. Rolled-back writes can leave physical work even though source rows are unchanged.
+Storage was measured after final benchmarks and before the extra partition prototype. Database size includes catalogs and free space. Table bytes include auxiliary forks and TOAST; index bytes are separate. Materialized reports and their indexes are included. Rolled-back updates leave physical work/bloat even though source values are unchanged.
 
-| Table | Seed rows | Large rows | Row growth |
+| Table | Seed rows | Uploaded large rows | Growth |
 |---|---:|---:|---:|
-| artists | 3,000 | 60,000 | 20.000× |
 | albums | 12,000 | 240,000 | 20.000× |
-| tracks | 67,808 | 1,360,381 | 20.062× |
-| track_artists | 77,489 | 1,554,720 | 20.064× |
-| users | 30,000 | 600,000 | 20.000× |
-| playlists | 10,000 | 200,000 | 20.000× |
-| playlist_tracks | 120,004 | 2,400,008 | 19.999× |
-| streams | 250,000 | 5,000,000 | 20.000× |
-| liked_tracks | 58,533 | 1,171,457 | 20.014× |
 | artist_follows | 69,901 | 1,399,801 | 20.025× |
+| artists | 3,000 | 60,000 | 20.000× |
+| liked_tracks | 58,533 | 1,171,457 | 20.014× |
+| playlist_tracks | 120,004 | 2,400,008 | 19.999× |
+| playlists | 10,000 | 200,000 | 20.000× |
+| streams | 250,000 | 5,000,000 | 20.000× |
+| track_artists | 77,489 | 1,554,720 | 20.064× |
+| tracks | 67,808 | 1,360,381 | 20.062× |
+| users | 30,000 | 600,000 | 20.000× |
+
+All ten database counts match the parsed uploaded CSV counts exactly. Loading completed with all constraints enabled.
 
 | Dataset | Database bytes | Application table bytes | Application index bytes |
 |---|---:|---:|---:|
-| seed_final | 134,332,943 | 50,692,096 | 75,218,944 |
-| large | 2,467,643,919 | 977,657,856 | 1,481,580,544 |
+| seed_final | 134,062,607 | 50,446,336 | 75,218,944 |
+| large | 2,462,499,343 | 972,668,928 | 1,481,449,472 |
 
 | Relation | Seed table bytes | Large table bytes | Seed index bytes | Large index bytes |
 |---|---:|---:|---:|---:|
 | albums | 1,277,952 | 22,249,472 | 1,253,376 | 23,830,528 |
 | artist_follows | 3,129,344 | 62,169,088 | 3,170,304 | 62,947,328 |
-| artists | 2,007,040 | 39,985,152 | 172,032 | 3,096,576 |
+| artists | 1,761,280 | 34,996,224 | 172,032 | 2,965,504 |
 | liked_tracks | 2,629,632 | 52,207,616 | 3,727,360 | 73,842,688 |
 | playlist_tracks | 6,299,648 | 125,755,392 | 4,915,200 | 98,222,080 |
 | playlists | 1,146,880 | 13,729,792 | 245,760 | 4,513,792 |
@@ -150,52 +202,82 @@ Sizes were measured after final benchmarks and before creating the extra partiti
 | tracks | 5,931,008 | 109,764,608 | 9,076,736 | 161,923,072 |
 | users | 3,244,032 | 57,778,176 | 2,957,312 | 63,102,976 |
 
-Observed large streams heap+auxiliary+indexes: **1,321,377,792 bytes** for 5,000,000 streams, or approximately **264.3 bytes/stream**. A simple 5× extrapolation to 25,000,000 streams is **6,606,888,960 bytes** for this relation and its indexes alone. Budget separately for other relations, WAL, backups, temporary sort/hash files, replicas, maintenance headroom and the temporary duplicate during a partition migration. This linear byte estimate is not a latency forecast.
+At 5,000,000 streams, the streams heap plus indexes occupies **1,321,377,792 bytes**, or **264.28 bytes per stream**. A simple 25-million-stream projection is **6.15 GiB** for streams alone. Scaling the entire measured large database fivefold gives about **11.47 GiB**. These are capacity estimates, not measured 100× results. They exclude extra backups, WAL retention, replicas and operational headroom; skew, retention and report cardinality can change the ratios.
 
 
 ## Partition pruning demonstration
 
-The separate prototype contains all **5,000,000** source streams across **19** monthly leaf partitions (including future coverage). The June aggregate has **0** differing result rows between the unpartitioned and partitioned layouts. The bounded partitioned plan references only **streams_2026_06**; the remaining **18** partitions are absent from the plan. The unbounded EXPLAIN in the raw evidence visits multiple partitions, as expected.
+The separate prototype contains all **5,000,000** uploaded streams across **19** monthly leaf partitions, including future coverage. The June aggregate produced **0** differing rows between the original and partitioned layouts. The bounded plan visits only **streams_2026_06**; the other **18** partitions do not appear. The unbounded plan visits multiple partitions.
 
-These are single-run pruning demonstrations, not three-run workload averages. Main large benchmarks still use the unpartitioned spotify.streams. The prototype’s duplicate storage is excluded from the main storage comparison above.
+These are single-run plan demonstrations, not three-run workload averages. Main query measurements still use the original unpartitioned spotify.streams. The duplicate prototype storage is excluded from the main storage comparison. The different buffer hit/read profiles also mean the timing difference alone is not a controlled partitioning speedup claim.
 
 ### Unpartitioned June aggregate
 
 ```text
-GroupAggregate  (cost=43621.68..49873.87 rows=277875 width=18) (actual time=179.888..228.685 rows=180 loops=1)
+GroupAggregate  (cost=43210.79..49406.80 rows=275378 width=18) (actual time=134.827..184.255 rows=180 loops=1)
   Group Key: ((started_at)::date), platform
   Buffers: shared hit=8 read=1843, temp read=690 written=693
-  ->  Sort  (cost=43621.68..44316.37 rows=277875 width=10) (actual time=179.344..201.937 rows=274725 loops=1)
+  ->  Sort  (cost=43210.79..43899.24 rows=275378 width=10) (actual time=134.201..156.356 rows=274725 loops=1)
         Sort Key: ((started_at)::date), platform
         Sort Method: external merge  Disk: 5520kB
         Buffers: shared hit=8 read=1843, temp read=690 written=693
-        ->  Index Only Scan using streams_started_idx on streams  (cost=0.43..13746.62 rows=277875 width=10) (actual time=0.015..90.255 rows=274725 loops=1)
+        ->  Index Only Scan using streams_started_idx on streams  (cost=0.43..13621.44 rows=275378 width=10) (actual time=0.021..68.252 rows=274725 loops=1)
               Index Cond: ((started_at >= '2026-06-01 00:00:00+05:30'::timestamp with time zone) AND (started_at < '2026-07-01 00:00:00+05:30'::timestamp with time zone))
               Heap Fetches: 67
               Buffers: shared hit=5 read=1843
 Planning:
   Buffers: shared hit=15 read=13
-Planning Time: 1.669 ms
-Execution Time: 229.301 ms
+Planning Time: 1.163 ms
+Execution Time: 185.278 ms
 ```
 
 ### Partitioned June aggregate
 
 ```text
-GroupAggregate  (cost=37128.83..43310.15 rows=274725 width=18) (actual time=125.245..175.364 rows=180 loops=1)
+GroupAggregate  (cost=37128.83..43310.15 rows=274725 width=18) (actual time=117.162..171.732 rows=180 loops=1)
   Group Key: ((streams.started_at)::date), streams.platform
   Buffers: shared hit=2806, temp read=690 written=693
-  ->  Sort  (cost=37128.83..37815.65 rows=274725 width=10) (actual time=124.616..146.277 rows=274725 loops=1)
+  ->  Sort  (cost=37128.83..37815.65 rows=274725 width=10) (actual time=116.428..140.115 rows=274725 loops=1)
         Sort Key: ((streams.started_at)::date), streams.platform
         Sort Method: external merge  Disk: 5520kB
         Buffers: shared hit=2806, temp read=690 written=693
-        ->  Seq Scan on streams_2026_06 streams  (cost=0.00..7613.69 rows=274725 width=10) (actual time=0.010..58.663 rows=274725 loops=1)
+        ->  Seq Scan on streams_2026_06 streams  (cost=0.00..7613.69 rows=274725 width=10) (actual time=0.009..54.559 rows=274725 loops=1)
               Filter: ((started_at >= '2026-06-01 00:00:00+05:30'::timestamp with time zone) AND (started_at < '2026-07-01 00:00:00+05:30'::timestamp with time zone))
               Buffers: shared hit=2806
 Planning:
-  Buffers: shared hit=26 read=12 dirtied=2
-Planning Time: 0.449 ms
-Execution Time: 175.834 ms
+  Buffers: shared hit=25 read=11 dirtied=2
+Planning Time: 0.717 ms
+Execution Time: 172.548 ms
+```
+
+### Unbounded query: no time pruning
+
+```text
+HashAggregate  (cost=151060.01..151060.07 rows=6 width=14)
+  Group Key: streams.platform
+  ->  Append  (cost=0.00..126060.01 rows=5000001 width=6)
+        ->  Seq Scan on streams_2025_01 streams_1  (cost=0.00..5737.83 rows=283883 width=6)
+        ->  Seq Scan on streams_2025_02 streams_2  (cost=0.00..5182.11 rows=256411 width=6)
+        ->  Seq Scan on streams_2025_03 streams_3  (cost=0.00..5737.82 rows=283882 width=6)
+        ->  Seq Scan on streams_2025_04 streams_4  (cost=0.00..5552.26 rows=274726 width=6)
+        ->  Seq Scan on streams_2025_05 streams_5  (cost=0.00..5737.82 rows=283882 width=6)
+        ->  Seq Scan on streams_2025_06 streams_6  (cost=0.00..5553.26 rows=274726 width=6)
+        ->  Seq Scan on streams_2025_07 streams_7  (cost=0.00..5737.82 rows=283882 width=6)
+        ->  Seq Scan on streams_2025_08 streams_8  (cost=0.00..5737.83 rows=283883 width=6)
+        ->  Seq Scan on streams_2025_09 streams_9  (cost=0.00..5552.25 rows=274725 width=6)
+        ->  Seq Scan on streams_2025_10 streams_10  (cost=0.00..5737.83 rows=283883 width=6)
+        ->  Seq Scan on streams_2025_11 streams_11  (cost=0.00..5553.26 rows=274726 width=6)
+        ->  Seq Scan on streams_2025_12 streams_12  (cost=0.00..5737.82 rows=283882 width=6)
+        ->  Seq Scan on streams_2026_01 streams_13  (cost=0.00..5737.83 rows=283883 width=6)
+        ->  Seq Scan on streams_2026_02 streams_14  (cost=0.00..5183.10 rows=256410 width=6)
+        ->  Seq Scan on streams_2026_03 streams_15  (cost=0.00..5737.83 rows=283883 width=6)
+        ->  Seq Scan on streams_2026_04 streams_16  (cost=0.00..5552.25 rows=274725 width=6)
+        ->  Seq Scan on streams_2026_05 streams_17  (cost=0.00..5737.83 rows=283883 width=6)
+        ->  Seq Scan on streams_2026_06 streams_18  (cost=0.00..5553.25 rows=274725 width=6)
+        ->  Seq Scan on streams_2026_07 streams_19  (cost=0.00..0.00 rows=1 width=32)
+JIT:
+  Functions: 40
+  Options: Inlining false, Optimization false, Expressions true, Deforming true
 ```
 
 
@@ -247,4 +329,4 @@ If report materialized views are introduced, refresh them on a documented schedu
 
 ## Conclusion
 
-The implementation is tested against the real 5-million-stream release, but readiness is not unconditional: 0 query target(s) remain unmet in this workspace run, and laptop/server verification is still required. Preserve correctness proofs, refresh freshness guarantees, partition-key uniqueness decisions, and complete before/after evidence. Sharding and replicas are design proposals, not deployed or measured systems.
+The implementation is tested against the uploaded 5-million-stream dataset, but readiness is not unconditional: 0 query target(s) remain unmet in this workspace run, and laptop/server verification is still required. Accepting snapshot freshness is a prerequisite for using materialized-report target passes; otherwise the direct-query misses still apply. Preserve correctness proofs, explicit refresh policies, partition-key uniqueness decisions, and complete before/after evidence. Sharding and replicas are design proposals, not deployed or measured systems.
